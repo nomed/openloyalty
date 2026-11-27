@@ -1,0 +1,3 @@
+# Agent instructions
+
+Read [monorepo entry point](docs/recovery/MONOREPO.md), [source provenance](docs/recovery/SOURCE-RECOVERY.md) and [runtime runbook](docs/recovery/RUNTIME-RUNBOOK.md) before editing. This is a reference/recovery branch, not a new product. Preserve exact sources and original tests; record build and test evidence. First materialize pinned sources if missing, then restore the coherent 2022 profile and original profile before attempting latest. Never expose the legacy stack publicly or use real customer data. No internal company material in this public repo. Check license before redistribution/use. Do not report a working stack without passing runtime gates.
