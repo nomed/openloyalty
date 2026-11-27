@@ -46,11 +46,13 @@ if ($name === "sskur/open-loyalty-framework") {
     $yaml=str_replace("    templating:\n        engines: [".chr(39)."twig".chr(39)."]\n", "", $yaml);
     $yaml=str_replace("    routing_loader:\n        include_format: true\n        default_format: json\n", "    routing_loader: false\n", $yaml);
     $yaml=str_replace("nelmio_api_doc:\n    sandbox:\n        request_format:\n            method: accept_header\n", "", $yaml);
+    $yaml=str_replace("        json:\n", "        json_serialization:\n", $yaml);
     file_put_contents($config, $yaml);
-    $devFrontController="/var/www/openloyalty/web/app_dev.php";
-    $source=file_get_contents($devFrontController);
-    $source=str_replace("use Symfony\\Component\\Debug\\Debug;", "use Symfony\\Component\\ErrorHandler\\Debug;", $source);
-    file_put_contents($devFrontController, $source);
+    foreach (["/var/www/openloyalty/web/app_dev.php", "/var/www/openloyalty/bin/console"] as $frontController) {
+        $source=file_get_contents($frontController);
+        $source=str_replace("use Symfony\\Component\\Debug\\Debug;", "use Symfony\\Component\\ErrorHandler\\Debug;", $source);
+        file_put_contents($frontController, $source);
+    }
     $deprecated="/var/www/openloyalty/app/config/services_deprecated.yml";
     $yaml=file_get_contents($deprecated);
     $yaml=str_replace("%service_id%", "%alias_id%", $yaml);
