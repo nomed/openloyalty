@@ -2,3 +2,8 @@
 .vagrant
 .idea
 kubernetes
+**/.git
+**/vendor
+**/node_modules
+runtime/*/logs
+runtime/*/generated

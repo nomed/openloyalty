@@ -1,0 +1,134 @@
+a2lix/auto-form-bundle               0.3       Automate form building
+a2lix/translation-form-bundle        3.0.6     Translate your doctrine objects easily with some helps
+beberlei/assert                      v2.9.9    Thin assertion library for input validation in business models.
+beberlei/doctrineextensions          v1.2.9    A set of extensions to Doctrine 2 that add support for additional query functions available in MySQL and Oracle.
+behat/transliterator                 v1.4.0    String transliterator
+broadway/broadway                    2.0.0     Infrastructure and testing helpers for creating CQRS and event sourced applications.
+broadway/broadway-bundle             0.4.2     Symfony bundle for broadway/broadway.
+broadway/event-store-dbal            0.2.1     Event store implementation using doctrine/dbal
+broadway/read-model-elasticsearch    0.3.0     Elasticsearch read model implementation using elastic/elasticsearch-php
+broadway/snapshotting                0.2.1     POC for snapshotting aggregates in broadway/broadway
+broadway/uuid-generator              0.4.0     UUID generator for broadway/broadway.
+composer/package-versions-deprecated 1.11.99.5 Composer plugin that provides efficient querying for installed package versions (no runtime IO)
+dataworksbi/open-loyalty-framework   dev-dev
+doctrine/annotations                 1.13.3    Docblock Annotations Parser
+doctrine/cache                       1.13.0    PHP Doctrine Cache library is a popular cache implementation that supports many different drivers such as redis, memcache, apc, mongodb and others.
+doctrine/collections                 1.6.8     PHP Doctrine Collections library that adds additional functionality on top of PHP arrays.
+doctrine/common                      2.13.3    PHP Doctrine Common project is a library that provides additional functionality that other Doctrine projects depend on such as better reflection support, persistence interfaces, proxies, event system and much more.
+doctrine/data-fixtures               1.3.3     Data Fixtures for all Doctrine Object Managers
+doctrine/dbal                        2.13.9    Powerful PHP database abstraction layer (DBAL) with many features for database schema introspection and management.
+doctrine/deprecations                v1.0.0    A small layer on top of trigger_error(E_USER_DEPRECATED) or PSR-3 logging with options to disable all deprecations or selectively for packages.
+doctrine/doctrine-bundle             1.12.13   Symfony DoctrineBundle
+doctrine/doctrine-cache-bundle       1.4.0     Symfony Bundle for Doctrine Cache
+doctrine/doctrine-fixtures-bundle    v2.4.1    Symfony DoctrineFixturesBundle
+doctrine/doctrine-migrations-bundle  v1.3.2    Symfony DoctrineMigrationsBundle
+doctrine/event-manager               1.1.2     The Doctrine Event Manager is a simple PHP event system that was built to be used with the various Doctrine projects.
+doctrine/inflector                   1.4.4     PHP Doctrine Inflector is a small library that can perform string manipulations with regard to upper/lowercase and singular/plural forms of words.
+doctrine/instantiator                1.4.1     A small, lightweight utility to instantiate objects in PHP without invoking their constructors
+doctrine/lexer                       1.2.3     PHP Doctrine Lexer parser library that can be used in Top-Down, Recursive Descent Parsers.
+doctrine/migrations                  v1.8.1    Database Schema migrations using Doctrine DBAL
+doctrine/orm                         2.7.5     Object-Relational-Mapper for PHP
+doctrine/persistence                 1.3.8     The Doctrine Persistence project is a set of shared interfaces and functionality that the different Doctrine object mappers share.
+doctrine/reflection                  1.2.3     The Doctrine Reflection project is a simple library used by the various Doctrine projects which adds some additional functionality on top of the reflection functionality that comes with PHP. It allows you to get the reflection information about classes, methods and properties statically.
+elasticsearch/elasticsearch          v5.5.0    PHP Client for Elasticsearch
+erusev/parsedown                     1.7.4     Parser for Markdown.
+fig/link-util                        1.1.2     Common utility implementations for HTTP links
+friendsofsymfony/rest-bundle         2.8.6     This Bundle provides various tools to rapidly develop RESTful API's with Symfony
+fzaninotto/faker                     v1.9.2    Faker is a PHP library that generates fake data for you.
+gesdinet/jwt-refresh-token-bundle    v0.1.8    Implements a refresh token system over Json Web Tokens in Symfony
+giggsey/libphonenumber-for-php       8.12.53   PHP Port of Google's libphonenumber
+giggsey/locale                       1.9       Locale functions required by libphonenumber-for-php
+gumlet/php-image-resize              1.9.2     PHP class to re-size and scale images
+guzzlehttp/guzzle                    6.5.8     Guzzle is a PHP HTTP client library
+guzzlehttp/promises                  1.5.1     Guzzle promises library
+guzzlehttp/psr7                      1.9.0     PSR-7 message implementation that also provides common utility methods
+guzzlehttp/ringphp                   1.1.1     Provides a simple API and specification that abstracts away the details of HTTP into a single PHP function.
+guzzlehttp/streams                   3.0.0     Provides a simple abstraction over streams of data
+incenteev/composer-parameter-handler v2.1.5    Composer script handling your ignored parameter file
+jdorn/sql-formatter                  v1.2.17   a PHP SQL highlighting library
+jms-serializer/serializer-bundle     1.5.0     Allows you to easily serialize, and deserialize data of any complexity
+jms/metadata                         1.7.0     Class/method/property metadata management in PHP
+jms/parser-lib                       1.0.1     A library for easily creating recursive-descent parsers.
+jms/serializer                       1.14.1    Library for (de-)serializing data of any complexity; supports XML, JSON, and YAML.
+knplabs/doctrine-behaviors           1.6.1     Doctrine2 behavior traits
+knplabs/gaufrette                    v0.10.0   PHP library that provides a filesystem abstraction layer
+knplabs/knp-gaufrette-bundle         0.3.0     Allows to easily use the Gaufrette library in a Symfony project
+lexik/jwt-authentication-bundle      v1.7.1    This bundle provides JWT authentication for your Symfony REST API
+michelf/php-markdown                 1.9.1     PHP Markdown
+misd/phone-number-bundle             v1.3.2    Integrates libphonenumber into your Symfony2 application
+monolog/monolog                      1.27.1    Sends your logs to files, sockets, inboxes, databases and various web services
+myclabs/deep-copy                    1.13.4    Create deep copies (clones) of your objects
+namshi/jose                          6.1.1     JSON Object Signing and Encryption library for PHP.
+nelmio/api-doc-bundle                2.13.5    Generates documentation for your REST API from annotations
+nelmio/cors-bundle                   1.5.6     Adds CORS (Cross-Origin Resource Sharing) headers support in your Symfony2 application
+ocramius/proxy-manager               1.0.2     A library providing utilities to generate, instantiate and generally operate with Object Proxies
+paragonie/random_compat              v9.99.100 PHP 5.x polyfill for random_bytes() and random_int() from PHP 7
+phar-io/manifest                     1.0.3     Component for reading phar.io manifest information from a PHP Archive (PHAR)
+phar-io/version                      2.0.1     Library for handling version information and constraints
+phpcollection/phpcollection          0.6.0     General-Purpose Collection Library for PHP
+phpdocumentor/reflection-common      1.0.1     Common reflection classes used by phpdocumentor to reflect the code structure
+phpdocumentor/reflection-docblock    3.2.2     With this component, a library can provide support for annotations via DocBlocks or otherwise retrieve information that is embedded in a DocBlock.
+phpdocumentor/type-resolver          0.3.0
+phpoption/phpoption                  1.8.1     Option Type for PHP
+phpseclib/phpseclib                  2.0.37    PHP Secure Communications Library - Pure-PHP implementations of RSA, AES, SSH2, SFTP, X.509 etc.
+phpspec/prophecy                     v1.10.3   Highly opinionated mocking framework for PHP 5.3+
+phpunit/php-code-coverage            6.1.4     Library that provides collection, processing, and rendering functionality for PHP code coverage information.
+phpunit/php-file-iterator            2.0.6     FilterIterator implementation that filters files based on a list of suffixes.
+phpunit/php-text-template            1.2.1     Simple template engine.
+phpunit/php-timer                    2.1.4     Utility class for timing
+phpunit/php-token-stream             3.1.3     Wrapper around PHP's tokenizer extension.
+phpunit/phpunit                      7.5.20    The PHP Unit Testing framework.
+pixers/salesmanago-api               1.1.1     SalesManago API
+prewk/xml-string-streamer            0.11.1    Stream large XML files with low memory consumption
+psr/cache                            1.0.1     Common interface for caching libraries
+psr/container                        1.0.0     Common Container Interface (PHP FIG PSR-11)
+psr/http-message                     1.0.1     Common interface for HTTP messages
+psr/link                             1.0.0     Common interfaces for HTTP links
+psr/log                              1.1.4     Common interface for logging libraries
+psr/simple-cache                     1.0.1     Common interfaces for simple caching
+ralouphie/getallheaders              3.0.3     A polyfill for getallheaders.
+ramsey/uuid                          3.9.6     Formerly rhumsaa/uuid. A PHP 5.4+ library for generating RFC 4122 version 1, 3, 4, and 5 universally unique identifiers (UUID).
+ramsey/uuid-doctrine                 1.4.3     Allow the use of a ramsey/uuid UUID as Doctrine field type.
+react/promise                        v2.9.0    A lightweight implementation of CommonJS Promises/A for PHP
+sebastian/code-unit-reverse-lookup   1.0.3     Looks up which function or method a line of code belongs to
+sebastian/comparator                 3.0.7     Provides the functionality to compare PHP values for equality
+sebastian/diff                       3.0.6     Diff implementation
+sebastian/environment                4.2.5     Provides functionality to handle HHVM/PHP environments
+sebastian/exporter                   3.1.5     Provides the functionality to export PHP variables for visualization
+sebastian/global-state               2.0.0     Snapshotting of global state
+sebastian/object-enumerator          3.0.5     Traverses array structures and object graphs to enumerate all referenced objects
+sebastian/object-reflector           1.1.3     Allows reflection of object attributes, including inherited and non-public ones
+sebastian/recursion-context          3.0.4     Provides functionality to recursively process PHP variables
+sebastian/resource-operations        2.0.3     Provides a list of PHP built-in functions that operate on resources
+sebastian/version                    2.0.1     Library that helps with managing the version number of Git-hosted PHP projects
+sensio/distribution-bundle           v5.0.25   Base bundle for Symfony Distributions
+sensio/framework-extra-bundle        v3.0.29   This bundle provides a way to configure your controllers with annotations
+sensio/generator-bundle              v3.1.7    This bundle generates code for you
+sensiolabs/security-checker          v6.0.3    A security checker for your composer.lock
+smsapi/php-client                    v1.8.7    Library for communicating with provider
+swiftmailer/swiftmailer              v5.4.12   Swiftmailer, free feature-rich PHP mailer
+symfony/http-client                  v4.4.44   Provides powerful methods to fetch HTTP resources synchronously or asynchronously
+symfony/http-client-contracts        v1.1.13   Generic abstractions related to HTTP clients
+symfony/mime                         v4.4.44   Allows manipulating MIME messages
+symfony/monolog-bundle               v2.12.1   Symfony MonologBundle
+symfony/polyfill-apcu                v1.26.0   Symfony polyfill backporting apcu_* functions to lower PHP versions
+symfony/polyfill-ctype               v1.26.0   Symfony polyfill for ctype functions
+symfony/polyfill-intl-icu            v1.26.0   Symfony polyfill for intl's ICU-related data and classes
+symfony/polyfill-intl-idn            v1.26.0   Symfony polyfill for intl's idn_to_ascii and idn_to_utf8 functions
+symfony/polyfill-intl-normalizer     v1.26.0   Symfony polyfill for intl's Normalizer class and related functions
+symfony/polyfill-mbstring            v1.26.0   Symfony polyfill for the Mbstring extension
+symfony/polyfill-php56               v1.20.0   Symfony polyfill backporting some PHP 5.6+ features to lower PHP versions
+symfony/polyfill-php70               v1.20.0   Symfony polyfill backporting some PHP 7.0+ features to lower PHP versions
+symfony/polyfill-php72               v1.26.0   Symfony polyfill backporting some PHP 7.2+ features to lower PHP versions
+symfony/polyfill-php73               v1.26.0   Symfony polyfill backporting some PHP 7.3+ features to lower PHP versions
+symfony/polyfill-php80               v1.26.0   Symfony polyfill backporting some PHP 8.0+ features to lower PHP versions
+symfony/service-contracts            v1.1.13   Generic abstractions related to writing services
+symfony/swiftmailer-bundle           v2.6.7    Symfony SwiftmailerBundle
+symfony/symfony                      v3.4.49   The Symfony PHP framework
+theseer/tokenizer                    1.1.3     A small library for converting tokenized PHP source code into XML and potentially other formats
+twig/twig                            v2.15.1   Twig, the flexible, fast, and secure template language for PHP
+webmozart/assert                     1.9.1     Assertions to validate method input/output with nice error messages.
+willdurand/jsonp-callback-validator  v1.1.0    JSONP callback validator.
+willdurand/negotiation               3.1.0     Content Negotiation tools for PHP provided as a standalone library.
+zendframework/zend-code              2.6.3     provides facilities to generate arbitrary code using an object oriented interface
+zendframework/zend-eventmanager      3.2.1     Trigger and listen to events within a PHP application

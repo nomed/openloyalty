@@ -4,7 +4,7 @@ VALID_PROFILES := original 2022 latest
 ifeq ($(filter $(PROFILE),$(VALID_PROFILES)),)
 $(error Invalid PROFILE: $(PROFILE))
 endif
-.PHONY: doctor sources materialize verify up smoke test down
+.PHONY: doctor sources materialize verify up setup smoke test down
 doctor:
 	bash scripts/reference-doctor.sh $(PROFILE)
 sources:
@@ -13,5 +13,5 @@ materialize:
 	bash scripts/materialize-reference.sh
 verify: sources
 	bash scripts/reference-doctor.sh $(PROFILE)
-up smoke test down:
+up setup smoke test down:
 	bash scripts/reference-runtime.sh $@ $(PROFILE)

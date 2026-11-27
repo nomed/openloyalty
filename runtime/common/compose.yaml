@@ -1,0 +1,112 @@
+services:
+  db:
+    image: ${POSTGRES_IMAGE}
+    platform: linux/amd64
+    environment:
+      POSTGRES_DB: openloyalty
+      POSTGRES_USER: openloyalty
+      POSTGRES_PASSWORD: ${SYNTHETIC_DB_PASSWORD}
+    tmpfs:
+      - /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U openloyalty -d openloyalty"]
+      interval: 5s
+      timeout: 3s
+      retries: 30
+    networks: [isolated]
+    restart: "no"
+
+  search:
+    image: ${ELASTICSEARCH_IMAGE}
+    platform: linux/amd64
+    # The legacy image's Go 1.5 gosu helper cannot create threads under this VM.
+    # Running as the image's own user skips that helper while retaining isolation.
+    user: "105:108"
+    environment:
+      ES_JAVA_OPTS: -Xms512m -Xmx512m
+      discovery.zen.ping.unicast.hosts: "[]"
+      network.host: 0.0.0.0
+    tmpfs:
+      - /usr/share/elasticsearch/data:uid=105,gid=108,mode=0700
+    networks: [isolated]
+    restart: "no"
+
+  mail:
+    image: ${MAILHOG_IMAGE}
+    platform: linux/amd64
+    ports:
+      - "127.0.0.1:${MAILHOG_PORT:-8025}:8025"
+    networks: [isolated, published]
+    restart: "no"
+
+  php:
+    build:
+      context: ../..
+      dockerfile: runtime/php/Dockerfile
+      args:
+        PHP_IMAGE: ${PHP_IMAGE}
+        COMPOSER_IMAGE: ${COMPOSER_IMAGE}
+        APP_PATH: ${APP_PATH}
+        FRAMEWORK_PATH: ${FRAMEWORK_PATH}
+        FRAMEWORK_PACKAGE: ${FRAMEWORK_PACKAGE}
+        FRAMEWORK_VERSION: ${FRAMEWORK_VERSION}
+        PHP_CONFIGURE: ${PHP_CONFIGURE}
+        SYNTHETIC_DB_PASSWORD: ${SYNTHETIC_DB_PASSWORD}
+        ADMIN_PATH: ${ADMIN_PATH}
+        CUSTOMER_PATH: ${CUSTOMER_PATH}
+        SELLER_PATH: ${SELLER_PATH}
+        PHPUNIT_VERSION: ${PHPUNIT_VERSION}
+    platform: linux/amd64
+    environment:
+      APP_DB_HOST: db
+      APP_DB_PORT: "5432"
+      APP_DB_USER: openloyalty
+      APP_DB_PASSWORD: ${SYNTHETIC_DB_PASSWORD}
+      APP_DB_NAME: openloyalty
+      ELK_HOST: search
+      MAILER_HOST: mail
+      SYMFONY_ENV: dev
+      COMPOSER_ALLOW_SUPERUSER: "1"
+    depends_on:
+      db:
+        condition: service_healthy
+      search:
+        condition: service_started
+    networks: [isolated]
+    restart: "no"
+
+  web:
+    build:
+      context: ../..
+      dockerfile: runtime/web/Dockerfile
+      args:
+        NGINX_IMAGE: ${NGINX_IMAGE}
+        NODE_IMAGE: ${NODE_IMAGE}
+        APP_PATH: ${APP_PATH}
+        API_URL: ${API_URL}
+    platform: linux/amd64
+    ports:
+      - "127.0.0.1:${HTTP_PORT:-8080}:80"
+    depends_on: [php]
+    networks: [isolated, published]
+    restart: "no"
+
+  frontend-test:
+    build:
+      context: ../..
+      dockerfile: runtime/web/Dockerfile
+      target: frontend
+      args:
+        NODE_IMAGE: ${NODE_IMAGE}
+        APP_PATH: ${APP_PATH}
+        API_URL: ${API_URL}
+    platform: linux/amd64
+    command: ["npm", "test"]
+    profiles: [tests]
+    networks: [isolated]
+    restart: "no"
+
+networks:
+  isolated:
+    internal: true
+  published: {}

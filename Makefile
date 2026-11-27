@@ -63,7 +63,7 @@ ci-setup-test: run
 test-security: run
 	$(DOCKER_COMPOSE) exec -T php phing test-security
 
-test: run
+legacy-test: run
 	$(DOCKER_COMPOSE) exec -T php phing generate-jwt-keys
 	$(DOCKER_COMPOSE) exec -T php bin/console doctrine:schema:drop --env=test --force
 	$(DOCKER_COMPOSE) exec -T php bin/console doctrine:schema:create --env=test
@@ -86,3 +86,7 @@ update: image clean run
 # all is phony...
 .PHONY: %
 .DEFAULT: run
+
+# Recovery targets are kept in a separate make fragment so the historical
+# application targets above remain readable and unchanged.
+include recovery.mk
