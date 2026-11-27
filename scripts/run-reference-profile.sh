@@ -19,7 +19,9 @@ case "$action" in
     ;;
   setup)
     ready=0
-    for ((attempt=0; attempt<60; attempt++)); do
+    # Elasticsearch 2.2 can take several minutes to open HTTP under AMD64
+    # emulation on an ARM host. Keep polling rather than failing after 2 min.
+    for ((attempt=0; attempt<300; attempt++)); do
       if "${compose[@]}" exec -T php php -r '$s=@fsockopen("search",9200,$e,$m,2); if ($s) { fclose($s); exit(0); } exit(1);'; then
         ready=1
         break
@@ -53,7 +55,7 @@ case "$action" in
       "${compose[@]}" exec -T php test -x var/bin/phpunit
       "${compose[@]}" exec -T --user www-data php php bin/phing.phar prepare-for-tests
       "${compose[@]}" exec -T --user www-data php php bin/console doctrine:schema:validate --env=test --skip-sync
-      "${compose[@]}" exec -T php php -d memory_limit=-1 var/bin/phpunit -c phpunit.xml.dist vendor/"${FRAMEWORK_PACKAGE}"/src
+      "${compose[@]}" exec -T php sh -c 'php -d memory_limit=-1 var/bin/phpunit -c phpunit.xml.dist "vendor/${APP_FRAMEWORK_PACKAGE}/src" > /tmp/reference-phpunit.log 2>&1; status=$?; cat /tmp/reference-phpunit.log; exit "$status"'
     } 2>&1 | tee "runtime/$profile/logs/test.log" || test_status=1
     "${compose[@]}" --profile tests run --rm --no-deps frontend-test 2>&1 | tee -a "runtime/$profile/logs/test.log" || test_status=1
     exit "$test_status"

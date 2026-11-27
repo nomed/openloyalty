@@ -56,10 +56,10 @@ application source is among the pinned sources.
 |---|---|---|---|
 | Image build | **Passed** after using the locked PHPUnit 7.1.5; PHP extension compilation took about 19 minutes under emulation. | **Passed**; frontend and PHP images built. | Pending |
 | Database migrations and setup | **Passed** on a fresh disposable database; 116 schema queries, Broadway event and snapshot schemas, and synthetic fixtures. | **Passed**; 116 schema queries and synthetic fixtures. | Pending |
-| Browser page and static resources | **Passed** after fixing Nginx routes: all three pages and each cockpit's CSS, shared JavaScript, config, and app bundle return HTTP 200. | Pages and synthetic API logins passed before the shared route fix; repeat smoke after rebuilding with the fixed Nginx configuration. | Pending |
+| Browser page and static resources | **Passed in headless Chrome:** all three pages and their CSS, JavaScript, config, and cockpit bundles load; customer, administrator, and seller can each sign in through the UI. | **Passed in headless Chrome:** all three cockpits load and synthetic customer, administrator, and seller accounts sign in through the UI. | Pending |
 | Synthetic API login | **Passed** for admin, customer, and seller. The first login exceeded a 15-second timeout under emulation; the check now allows 60 seconds. | **Passed** for admin, customer, and seller. | Pending |
-| Backend test suite | Running: PHPUnit 7.1.5, 1,135 tests; most recent recorded progress 549/1,135 (48%), with errors already reported. | Initial diagnostic run without `prepare-for-tests`: 1,135 tests, 31 errors, 46 failures, 2 skipped. Not a final result. Rerun using the completed test-preparation step. | Pending |
-| Frontend tests | Pending | Build passes; test fails because `frontend/test/HelloWorldTest.js` imports missing `src/assets/js/hello-world.js`. | Pending |
+| Backend test suite | **Passed:** PHPUnit 7.1.5, 1,135 tests and 5,783 assertions. | Initial diagnostic run without `prepare-for-tests`: 1,135 tests, 31 errors, 46 failures, 2 skipped. Not a final result. Rerun using the completed test-preparation step. | Pending |
+| Frontend tests | **Failed in the upstream test:** `frontend/test/HelloWorldTest.js` imports the absent `src/assets/js/hello-world.js`; frontend build itself passes. | Build passes; test fails for the same absent `src/assets/js/hello-world.js`. | Pending |
 
 The test target now runs the upstream `prepare-for-tests` target, validates the
 test schema, runs the full framework test directory with unlimited PHP memory,
@@ -84,6 +84,11 @@ resources, not only the HTML shell.
   threads under ARM64 emulation. Compose runs the service as its existing
   image user (`105:108`) and gives its temporary data directory matching
   ownership. Elasticsearch 2.2.2 then starts.
+- Passing the literal string `[]` as Elasticsearch 2.2's unicast host list
+  left a fresh profile without an HTTP listener. The isolated network already
+  prevents cross-profile discovery, so the runtime now omits that setting,
+  disables multicast, sets the single-node master count, and enables HTTP on
+  port 9200. The 2022 profile then opened the HTTP port and completed setup.
 - The first setup revealed that APCu is required by the application. The
   runtime pins APCu 5.1.21.
 - The original tree has no `app/uploads` directory. Setup creates an empty
@@ -91,6 +96,11 @@ resources, not only the HTML shell.
 - The frontend's application and shared files are relative to each cockpit
   URL. Initially Nginx returned 404 for those files while the HTML returned
   200. The recovery Nginx configuration now maps them to the built assets.
+- A real headless Chrome load then exposed a frontend dependency mismatch:
+  Angular 1.6.6 was paired with `angular-sanitize` 1.7.2, which requires the
+  removed `angular.$$lowercase` helper. The runtime now pins and verifies the
+  matching `angular-sanitize` 1.6.6. Browser sign-in succeeded in all three
+  cockpits after rebuilding the original profile.
 - Under emulation, the first PHP login may take longer than 15 seconds. The
   synthetic API check now uses a 60-second timeout and does not print tokens.
 - Nginx logs `io_setup() failed (38: Function not implemented)` under this

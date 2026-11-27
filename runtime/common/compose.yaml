@@ -24,7 +24,10 @@ services:
     user: "105:108"
     environment:
       ES_JAVA_OPTS: -Xms512m -Xmx512m
-      discovery.zen.ping.unicast.hosts: "[]"
+      discovery.zen.minimum_master_nodes: "1"
+      discovery.zen.ping.multicast.enabled: "false"
+      http.enabled: "true"
+      http.port: "9200"
       network.host: 0.0.0.0
     tmpfs:
       - /usr/share/elasticsearch/data:uid=105,gid=108,mode=0700

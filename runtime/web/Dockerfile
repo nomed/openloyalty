@@ -5,11 +5,13 @@ ARG APP_PATH
 ARG API_URL
 WORKDIR /src
 COPY ${APP_PATH}/frontend/ ./
+RUN npm install --prefix /opt/npm5 npm@5.10.0 --unsafe-perm
+COPY runtime/web/frontend-package-lock.json ./package-lock.json
+RUN node -e "const fs=require('fs');const p=require('./package.json');p.dependencies['angular-sanitize']='1.6.6';fs.writeFileSync('package.json',JSON.stringify(p,null,2)+'\\n')" \
+    && /opt/npm5/node_modules/.bin/npm ci --unsafe-perm --no-audit --no-fund \
+    && npm ls angular-sanitize
 COPY runtime/web/frontend-config.js /tmp/frontend-config.js
 RUN sed "s|__API_URL__|${API_URL}|g" /tmp/frontend-config.js > src/config.js \
-    && npm install --prefix /opt/npm5 npm@5.10.0 --unsafe-perm
-COPY runtime/web/frontend-package-lock.json ./package-lock.json
-RUN /opt/npm5/node_modules/.bin/npm ci --unsafe-perm --no-audit --no-fund \
     && npm run build
 
 FROM ${NGINX_IMAGE}
