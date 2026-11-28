@@ -47,7 +47,7 @@ case "$action" in
         echo "OK ${cockpit}/${asset}" | tee -a "runtime/$profile/logs/smoke.log"
       done
     done
-    python3 scripts/smoke-reference-api.py "http://127.0.0.1:${HTTP_PORT:-8080}" 2>&1 | tee -a "runtime/$profile/logs/smoke.log"
+    python3 scripts/smoke-reference-api.py "$API_URL" 2>&1 | tee -a "runtime/$profile/logs/smoke.log"
     ;;
   test)
     test_status=0

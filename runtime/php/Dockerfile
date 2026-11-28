@@ -20,6 +20,8 @@ ENV APP_FRAMEWORK_PACKAGE=${FRAMEWORK_PACKAGE} \
     COMPOSER_ALLOW_SUPERUSER=1
 
 COPY --from=composer /usr/bin/composer /usr/local/bin/composer
+COPY runtime/php/entrypoint.sh /usr/local/bin/reference-php-entrypoint
+RUN chmod 0755 /usr/local/bin/reference-php-entrypoint
 COPY ${APP_PATH}/backend/ /var/www/openloyalty/
 COPY ${FRAMEWORK_PATH}/ /opt/open-loyalty-framework/
 
@@ -57,4 +59,5 @@ RUN locked_phpunit=$(php -r '$l=json_decode(file_get_contents("composer.lock"),t
 
 ENV SYMFONY_ENV=dev
 EXPOSE 9000
+ENTRYPOINT ["/usr/local/bin/reference-php-entrypoint"]
 CMD ["php-fpm"]

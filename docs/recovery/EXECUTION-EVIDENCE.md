@@ -54,11 +54,11 @@ application source is among the pinned sources.
 
 | Check | Original 3.2.0 | 2022 | 2025 framework |
 |---|---|---|---|
-| Image build | **Passed** after using the locked PHPUnit 7.1.5; PHP extension compilation took about 19 minutes under emulation. | **Passed**; frontend and PHP images built. | Pending |
-| Database migrations and setup | **Passed** on a fresh disposable database; 116 schema queries, Broadway event and snapshot schemas, and synthetic fixtures. | **Passed**; 116 schema queries and synthetic fixtures. | Pending |
-| Browser page and static resources | **Passed in headless Chrome:** all three pages and their CSS, JavaScript, config, and cockpit bundles load; customer, administrator, and seller can each sign in through the UI. | **Passed in headless Chrome:** all three cockpits load and synthetic customer, administrator, and seller accounts sign in through the UI. | Pending |
-| Synthetic API login | **Passed** for admin, customer, and seller. The first login exceeded a 15-second timeout under emulation; the check now allows 60 seconds. | **Passed** for admin, customer, and seller. | Pending |
-| Backend test suite | **Passed:** PHPUnit 7.1.5, 1,135 tests and 5,783 assertions. | Initial diagnostic run without `prepare-for-tests`: 1,135 tests, 31 errors, 46 failures, 2 skipped. Not a final result. Rerun using the completed test-preparation step. | Pending |
+| Image build | **Passed** after using the locked PHPUnit 7.1.5; PHP extension compilation took about 19 minutes under emulation. | **Passed in the 2026-11-28 rerun**; PHP 7.1 and frontend images built under ARM64 emulation. | **Passed**; rebuilt after adding runtime compatibility changes. |
+| Database migrations and setup | **Passed** on a fresh disposable database; 116 schema queries, Broadway event and snapshot schemas, and synthetic fixtures. | **Passed in the 2026-11-28 rerun**; 116 schema queries, Broadway event and snapshot schemas, and synthetic fixtures loaded. | **Failed**; Symfony container compilation still stops on framework/application service incompatibilities. |
+| Browser page and static resources | **Passed in headless Chrome:** all three pages and their CSS, JavaScript, config, and cockpit bundles load; customer, administrator, and seller can each sign in through the UI. | **Passed for admin on 2026-11-28:** after restoring default logo files and Elasticsearch projection indices, the browser rendered the dashboard and synthetic levels with zeroed analytics. Customer and seller cockpit pages and assets load; their API logins pass, but their UI logins were not repeated in this check. | **Partial:** all three pages and static assets returned successfully in the first smoke run. Latest setup did not complete, so a current authenticated browser result is unavailable. |
+| Synthetic API login | **Passed** for admin, customer, and seller. The first login exceeded a 15-second timeout under emulation; the check now allows 60 seconds. | **Passed on 2026-11-28:** `make smoke PROFILE=2022` authenticated admin, customer, and seller. The four authenticated dashboard analytics endpoints also returned HTTP 200 after search indices were restored. | **Failed in the first smoke run** with HTTP 500 for all roles; that image logged a call to removed `AppKernel::loadClassCache()`. After removing that call, setup advanced further but remains blocked during service compilation; login was not re-verified. |
+| Backend test suite | **Passed:** PHPUnit 7.1.5, 1,135 tests and 5,783 assertions. | **Running in the 2026-11-28 rerun:** test preparation reported a temporary PostgreSQL connection loss while loading fixtures; schema validation then passed and PHPUnit 7.5.20 began. The latest saved console checkpoint is 122 of 1,135, with errors, failures, and skips visible; final totals are pending. | **Not run:** setup has not passed. |
 | Frontend tests | **Failed in the upstream test:** `frontend/test/HelloWorldTest.js` imports the absent `src/assets/js/hello-world.js`; frontend build itself passes. | Build passes; test fails for the same absent `src/assets/js/hello-world.js`. | Pending |
 
 The test target now runs the upstream `prepare-for-tests` target, validates the
@@ -67,11 +67,17 @@ and runs the frontend tests separately. The original profile uses PHPUnit
 7.1.5 from its pinned lockfile because Composer 1 cannot fetch a new PHPUnit
 version: Packagist reports that Composer 1 support ended in September 2025.
 
-### Browser access for the active original profile
+### Browser access for the active 2022 profile
 
-- Admin: `http://127.0.0.1:8080/admin/index.html`
-- Customer: `http://127.0.0.1:8080/client/index.html`
-- Seller / POS: `http://127.0.0.1:8080/pos/index.html`
+- Admin: `http://127.0.0.1:8081/admin/index.html`
+- Customer: `http://127.0.0.1:8081/client/index.html`
+- Seller / POS: `http://127.0.0.1:8081/pos/index.html`
+
+The 2026-11-28 browser check signed into the admin cockpit with the synthetic
+account and rendered the dashboard. Its analytics show zero values because the
+synthetic event table is empty. The API smoke check also authenticated the
+synthetic customer and seller accounts. The `latest` containers were stopped
+after the failed setup; only their isolated synthetic volumes were removed.
 
 Synthetic accounts: `admin` / `open`, `user@oloy.com` / `loyalty`, and
 `john@doe.com` / `open`. The Nginx configuration now maps cockpit-relative
@@ -103,6 +109,30 @@ resources, not only the HTML shell.
   cockpits after rebuilding the original profile.
 - Under emulation, the first PHP login may take longer than 15 seconds. The
   synthetic API check now uses a 60-second timeout and does not print tokens.
+- In the 2022 profile, successful authentication dispatched the customer-login
+  event for admins and sellers too. That ran customer earning-rule work
+  synchronously and made the login request stall. The runtime patch now
+  dispatches that event only for actual customer accounts; admin login then
+  returned promptly and reached the browser dashboard. The running container
+  received this patch directly; a clean profile rebuild is still required to
+  prove it is reproduced from the checked-in runtime script.
+- The same 2022 run found the pinned Elasticsearch 2.2 JVM terminate with
+  `guarantee(PageArmed == 0) failed: invariant` under AMD64 emulation.
+  Restarting this service restores its HTTP listener but clears its configured
+  temporary data directory. That removed projection indices and made dashboard
+  analytics return HTTP 500. Recreating the projection indices and replaying
+  the current event store restored HTTP 200 responses and rendered the admin
+  dashboard; the event table contained zero events. The JVM crash under
+  emulation remains a reliability issue.
+- Replacing the PHP container also removed fixture logo files referenced by
+  synthetic settings, causing image requests to return HTTP 500. Copying the
+  framework's bundled default logo into the disposable upload directory
+  restored all seven logo routes to HTTP 200. Runtime startup now includes
+  logic to restore missing defaults, but that latest entrypoint edit has not
+  yet been rebuilt into and tested from a fresh image.
+- The PHP entrypoint generates a synthetic JWT key pair when the container is
+  recreated without keys. A clean container replacement verified the key
+  files and permissions, and the all-role API smoke then passed.
 - Nginx logs `io_setup() failed (38: Function not implemented)` under this
   emulation, but continues serving the site.
 - Legacy Phing reports a malformed numeric value; Symfony reports timezone

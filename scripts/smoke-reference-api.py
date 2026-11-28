@@ -7,7 +7,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-base = sys.argv[1].rstrip("/")
+api_base = sys.argv[1].rstrip("/")
 checks = (
     ("admin", "admin", "open"),
     ("customer", "user@oloy.com", "loyalty"),
@@ -16,7 +16,7 @@ checks = (
 failed = False
 for role, username, password in checks:
     request = urllib.request.Request(
-        base + "/app_dev.php/api/" + role + "/login_check",
+        api_base + "/" + role + "/login_check",
         data=urllib.parse.urlencode({"_username": username, "_password": password}).encode(),
         headers={"Content-Type": "application/x-www-form-urlencoded"},
     )
